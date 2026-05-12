@@ -29,7 +29,7 @@ const services = [
 const reviews = [
   { name: "Ilona Chyzhyk", text: "Wielkie podziękowania dla pana Sebastiana i jego zespołu. Praca wykonana z najwyższą starannością — polecam każdemu.", rating: 5 },
   { name: "Dominika Siwiec", text: "Wspaniała ekipa godna polecenia z czystym sumieniem. Staranność, dokładność i punktualność. Błyskawiczna wycena, stały kontakt.", rating: 5 },
-  { name: "Klient Google", text: "Profesjonalne podejście od pierwszego kontaktu. Efekt końcowy przerósł moje oczekiwania.", rating: 5 },
+  { name: "Marek Senior", text: "Bardzo profesjonalna firma. Zlecone prace wykonane bez zastrzeżeń. Wysoka kultura osobista. Szczerze polecam każdemu, kto ceni sobie porządnie wykonaną robotę. Panu Sebastianowi bardzo dziękujemy i życzymy samych sukcesów.", rating: 5 },
 ];
 
 function Index() {
