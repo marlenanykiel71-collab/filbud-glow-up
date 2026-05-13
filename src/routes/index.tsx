@@ -36,6 +36,37 @@ const reviews = [
 ];
 
 function Index() {
+  const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = e.currentTarget;
+    const name = (f.elements.namedItem("name") as HTMLInputElement).value.trim();
+    const phone = (f.elements.namedItem("phone") as HTMLInputElement).value.trim();
+    const message = (f.elements.namedItem("message") as HTMLTextAreaElement).value.trim();
+
+    if (!name || !phone) {
+      toast.error("Uzupełnij imię i telefon.");
+      return;
+    }
+
+    setSubmitting(true);
+    const { error } = await supabase
+      .from("contact_submissions")
+      .insert({ name, phone, message: message || null });
+    setSubmitting(false);
+
+    if (error) {
+      toast.error("Nie udało się wysłać. Spróbuj ponownie lub zadzwoń: 888 901 181");
+      return;
+    }
+
+    toast.success("Zapytanie wysłane! Skontaktujemy się wkrótce.");
+    setSent(true);
+    f.reset();
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* NAV */}
