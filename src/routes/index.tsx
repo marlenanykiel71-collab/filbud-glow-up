@@ -260,14 +260,12 @@ function Index() {
 
             <div className="space-y-4">
               <a
-                href="https://wa.me/48888901181?text=Dzie%C5%84%20dobry%2C%20chcia%C5%82bym%20otrzyma%C4%87%20bezp%C5%82atn%C4%85%20wycen%C4%99."
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:prygakacper449@gmail.com?subject=Bezp%C5%82atna%20wycena%20%E2%80%94%20FilBud&body=Dzie%C5%84%20dobry%2C%0A%0Achcia%C5%82bym%20otrzyma%C4%87%20bezp%C5%82atn%C4%85%20wycen%C4%99.%0A%0AOpis%20projektu%3A%0A%0AImi%C4%99%20i%20nazwisko%3A%0ATelefon%3A"
                 className="w-full px-8 py-5 bg-accent text-accent-foreground hover:opacity-90 transition-opacity inline-flex items-center justify-between gap-3 group"
               >
                 <span className="flex items-center gap-3">
-                  <MessageCircle className="h-5 w-5" strokeWidth={1.5} />
-                  Napisz na WhatsApp
+                  <Mail className="h-5 w-5" strokeWidth={1.5} />
+                  Napisz e-mail
                 </span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </a>
