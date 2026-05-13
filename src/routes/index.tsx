@@ -1,8 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Phone, MapPin, Clock, Star, ArrowRight, Hammer, PaintRoller, Wrench, Ruler, ShieldCheck, Sparkles, CheckCircle2, Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { Phone, MapPin, Clock, Star, ArrowRight, Hammer, PaintRoller, Wrench, Ruler, ShieldCheck, Sparkles, MessageCircle, Mail } from "lucide-react";
 import logo from "@/assets/filbud-logo.png";
 import hero from "@/assets/hero-interior.jpg";
 import workBathroom from "@/assets/work-bathroom.jpg";
