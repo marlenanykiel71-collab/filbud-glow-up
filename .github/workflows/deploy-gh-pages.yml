@@ -1,0 +1,62 @@
+name: Deploy to gh-pages
+
+# Builds the static SPA (vite.static.config.mts) and publishes ONLY the
+# production build output to the `gh-pages` branch. The branch will contain:
+#   /index.html
+#   /favicon.ico
+#   /og-image.png
+#   /placeholder.svg
+#   /robots.txt
+#   /.nojekyll
+#   /assets/...   (hashed CSS, JS, images)
+# All paths inside index.html are relative (./assets/...), so the result
+# works on GitHub Pages, any subdirectory, or a plain FTP server.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build static SPA
+        run: bun run build:static
+
+      - name: Verify required root files
+        run: |
+          cd dist-static
+          for f in index.html favicon.ico og-image.png placeholder.svg robots.txt .nojekyll; do
+            test -e "$f" || { echo "Missing $f"; exit 1; }
+          done
+          test -d assets || { echo "Missing assets/ directory"; exit 1; }
+          echo "All required files present."
+          ls -la
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist-static
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: "deploy: ${{ github.sha }}"
