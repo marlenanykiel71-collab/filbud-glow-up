@@ -67,7 +67,7 @@ function Index() {
               Wnętrza<br />
               <span className="italic text-accent">wykończone</span> z pasją.
             </h1>
-            <p className="mt-8 text-lg md:text-xl max-w-xl opacity-90 leading-relaxed">
+            <p className="mt-8 text-lg max-w-xl opacity-90 leading-relaxed md:text-xl">
               FilBud to zespół rzemieślników, który traktuje Twój dom jak swój własny.
               Remonty, wykończenia i detale, które robią różnicę.
             </p>
