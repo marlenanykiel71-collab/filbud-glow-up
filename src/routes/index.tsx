@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Phone, MapPin, Clock, Star, ArrowRight, Hammer, PaintRoller, Wrench, Ruler, ShieldCheck, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Phone, MapPin, Clock, Star, ArrowRight, Hammer, PaintRoller, Wrench, Ruler, ShieldCheck, Sparkles, CheckCircle2, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/filbud-logo.png";
 import hero from "@/assets/hero-interior.jpg";
 import workBathroom from "@/assets/work-bathroom.jpg";
@@ -33,6 +36,37 @@ const reviews = [
 ];
 
 function Index() {
+  const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = e.currentTarget;
+    const name = (f.elements.namedItem("name") as HTMLInputElement).value.trim();
+    const phone = (f.elements.namedItem("phone") as HTMLInputElement).value.trim();
+    const message = (f.elements.namedItem("message") as HTMLTextAreaElement).value.trim();
+
+    if (!name || !phone) {
+      toast.error("Uzupełnij imię i telefon.");
+      return;
+    }
+
+    setSubmitting(true);
+    const { error } = await supabase
+      .from("contact_submissions")
+      .insert({ name, phone, message: message || null });
+    setSubmitting(false);
+
+    if (error) {
+      toast.error("Nie udało się wysłać. Spróbuj ponownie lub zadzwoń: 888 901 181");
+      return;
+    }
+
+    toast.success("Zapytanie wysłane! Skontaktujemy się wkrótce.");
+    setSent(true);
+    f.reset();
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* NAV */}
@@ -247,46 +281,63 @@ function Index() {
             </div>
           </div>
 
-          <form
-            className="bg-card p-10 md:p-14 border border-border"
-            style={{ boxShadow: "var(--shadow-card)" }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              const f = e.currentTarget as HTMLFormElement;
-              const name = (f.elements.namedItem("name") as HTMLInputElement).value;
-              const phone = (f.elements.namedItem("phone") as HTMLInputElement).value;
-              const message = (f.elements.namedItem("message") as HTMLTextAreaElement).value;
-              const subject = encodeURIComponent(`Bezpłatna wycena — ${name}`);
-              const body = encodeURIComponent(
-                `Imię i nazwisko: ${name}\nTelefon: ${phone}\n\nOpis projektu:\n${message}`
-              );
-              window.open(
-                `https://mail.google.com/mail/?view=cm&fs=1&to=prygakacper449@gmail.com&su=${subject}&body=${body}`,
-                "_blank"
-              );
-              f.reset();
-            }}
-          >
-            <h3 className="text-3xl mb-8">Bezpłatna wycena</h3>
-            <div className="space-y-6">
-              <div>
-                <label className="text-xs uppercase tracking-wider text-muted-foreground">Imię i nazwisko</label>
-                <input name="name" type="text" required className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
-              </div>
-              <div>
-                <label className="text-xs uppercase tracking-wider text-muted-foreground">Telefon</label>
-                <input name="phone" type="tel" required className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
-              </div>
-              <div>
-                <label className="text-xs uppercase tracking-wider text-muted-foreground">Opisz projekt</label>
-                <textarea name="message" rows={4} className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors resize-none" />
-              </div>
-              <button type="submit" className="w-full mt-4 px-8 py-4 bg-primary text-primary-foreground hover:bg-accent transition-colors inline-flex items-center justify-center gap-3 group">
-                Wyślij zapytanie
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          {sent ? (
+            <div
+              className="bg-card p-10 md:p-14 border border-border flex flex-col items-center justify-center text-center"
+              style={{ boxShadow: "var(--shadow-card)" }}
+            >
+              <CheckCircle2 className="h-14 w-14 text-accent mb-6" strokeWidth={1.25} />
+              <h3 className="text-3xl mb-3">Dziękujemy!</h3>
+              <p className="text-muted-foreground leading-relaxed mb-8 max-w-sm">
+                Twoje zapytanie zostało wysłane. Skontaktujemy się z Tobą najszybciej jak to możliwe.
+              </p>
+              <button
+                onClick={() => setSent(false)}
+                className="px-6 py-3 border border-border hover:bg-secondary transition-colors text-sm uppercase tracking-wider"
+              >
+                Wyślij kolejne
               </button>
             </div>
-          </form>
+          ) : (
+            <form
+              className="bg-card p-10 md:p-14 border border-border"
+              style={{ boxShadow: "var(--shadow-card)" }}
+              onSubmit={handleSubmit}
+            >
+              <h3 className="text-3xl mb-8">Bezpłatna wycena</h3>
+              <div className="space-y-6">
+                <div>
+                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Imię i nazwisko</label>
+                  <input name="name" type="text" required maxLength={200} className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
+                </div>
+                <div>
+                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Telefon</label>
+                  <input name="phone" type="tel" required maxLength={50} className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
+                </div>
+                <div>
+                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Opisz projekt</label>
+                  <textarea name="message" rows={4} maxLength={5000} className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors resize-none" />
+                </div>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full mt-4 px-8 py-4 bg-primary text-primary-foreground hover:bg-accent transition-colors inline-flex items-center justify-center gap-3 group disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Wysyłanie…
+                    </>
+                  ) : (
+                    <>
+                      Wyślij zapytanie
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </section>
 
