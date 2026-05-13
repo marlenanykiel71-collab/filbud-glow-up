@@ -260,7 +260,11 @@ function Index() {
               const body = encodeURIComponent(
                 `Imię i nazwisko: ${name}\nTelefon: ${phone}\n\nOpis projektu:\n${message}`
               );
-              window.location.href = `mailto:prygakacper449@gmail.com?subject=${subject}&body=${body}`;
+              window.open(
+                `https://mail.google.com/mail/?view=cm&fs=1&to=prygakacper449@gmail.com&su=${subject}&body=${body}`,
+                "_blank"
+              );
+              f.reset();
             }}
           >
             <h3 className="text-3xl mb-8">Bezpłatna wycena</h3>
