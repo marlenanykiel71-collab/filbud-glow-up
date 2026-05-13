@@ -247,20 +247,35 @@ function Index() {
             </div>
           </div>
 
-          <form className="bg-card p-10 md:p-14 border border-border" style={{ boxShadow: "var(--shadow-card)" }} onSubmit={(e) => { e.preventDefault(); window.location.href = "tel:888901181"; }}>
+          <form
+            className="bg-card p-10 md:p-14 border border-border"
+            style={{ boxShadow: "var(--shadow-card)" }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const f = e.currentTarget as HTMLFormElement;
+              const name = (f.elements.namedItem("name") as HTMLInputElement).value;
+              const phone = (f.elements.namedItem("phone") as HTMLInputElement).value;
+              const message = (f.elements.namedItem("message") as HTMLTextAreaElement).value;
+              const subject = encodeURIComponent(`Bezpłatna wycena — ${name}`);
+              const body = encodeURIComponent(
+                `Imię i nazwisko: ${name}\nTelefon: ${phone}\n\nOpis projektu:\n${message}`
+              );
+              window.location.href = `mailto:prygakacper449@gmail.com?subject=${subject}&body=${body}`;
+            }}
+          >
             <h3 className="text-3xl mb-8">Bezpłatna wycena</h3>
             <div className="space-y-6">
               <div>
                 <label className="text-xs uppercase tracking-wider text-muted-foreground">Imię i nazwisko</label>
-                <input type="text" required className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
+                <input name="name" type="text" required className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
               </div>
               <div>
                 <label className="text-xs uppercase tracking-wider text-muted-foreground">Telefon</label>
-                <input type="tel" required className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
+                <input name="phone" type="tel" required className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
               </div>
               <div>
                 <label className="text-xs uppercase tracking-wider text-muted-foreground">Opisz projekt</label>
-                <textarea rows={4} className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors resize-none" />
+                <textarea name="message" rows={4} className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors resize-none" />
               </div>
               <button type="submit" className="w-full mt-4 px-8 py-4 bg-primary text-primary-foreground hover:bg-accent transition-colors inline-flex items-center justify-center gap-3 group">
                 Wyślij zapytanie
