@@ -247,63 +247,58 @@ function Index() {
             </div>
           </div>
 
-          {sent ? (
-            <div
-              className="bg-card p-10 md:p-14 border border-border flex flex-col items-center justify-center text-center"
-              style={{ boxShadow: "var(--shadow-card)" }}
-            >
-              <CheckCircle2 className="h-14 w-14 text-accent mb-6" strokeWidth={1.25} />
-              <h3 className="text-3xl mb-3">Dziękujemy!</h3>
-              <p className="text-muted-foreground leading-relaxed mb-8 max-w-sm">
-                Twoje zapytanie zostało wysłane. Skontaktujemy się z Tobą najszybciej jak to możliwe.
-              </p>
-              <button
-                onClick={() => setSent(false)}
-                className="px-6 py-3 border border-border hover:bg-secondary transition-colors text-sm uppercase tracking-wider"
+          <div
+            className="bg-card p-10 md:p-14 border border-border flex flex-col justify-center"
+            style={{ boxShadow: "var(--shadow-card)" }}
+          >
+            <p className="text-xs tracking-[0.3em] uppercase text-accent mb-6">— Bezpłatna wycena</p>
+            <h3 className="text-3xl md:text-4xl mb-4 leading-tight">Napisz lub zadzwoń jednym kliknięciem.</h3>
+            <p className="text-muted-foreground leading-relaxed mb-10">
+              Najszybciej odpowiadamy na WhatsAppie. Opisz krótko czego potrzebujesz —
+              oddzwonimy z bezpłatną wyceną tego samego dnia.
+            </p>
+
+            <div className="space-y-4">
+              <a
+                href="https://wa.me/48888901181?text=Dzie%C5%84%20dobry%2C%20chcia%C5%82bym%20otrzyma%C4%87%20bezp%C5%82atn%C4%85%20wycen%C4%99."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full px-8 py-5 bg-accent text-accent-foreground hover:opacity-90 transition-opacity inline-flex items-center justify-between gap-3 group"
               >
-                Wyślij kolejne
-              </button>
+                <span className="flex items-center gap-3">
+                  <MessageCircle className="h-5 w-5" strokeWidth={1.5} />
+                  Napisz na WhatsApp
+                </span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+
+              <a
+                href="tel:888901181"
+                className="w-full px-8 py-5 bg-primary text-primary-foreground hover:bg-accent transition-colors inline-flex items-center justify-between gap-3 group"
+              >
+                <span className="flex items-center gap-3">
+                  <Phone className="h-5 w-5" strokeWidth={1.5} />
+                  Zadzwoń: 888 901 181
+                </span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+
+              <a
+                href="sms:888901181"
+                className="w-full px-8 py-5 border border-border hover:bg-secondary transition-colors inline-flex items-center justify-between gap-3 group"
+              >
+                <span className="flex items-center gap-3">
+                  <Mail className="h-5 w-5 text-accent" strokeWidth={1.5} />
+                  Wyślij SMS
+                </span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </a>
             </div>
-          ) : (
-            <form
-              className="bg-card p-10 md:p-14 border border-border"
-              style={{ boxShadow: "var(--shadow-card)" }}
-              onSubmit={handleSubmit}
-            >
-              <h3 className="text-3xl mb-8">Bezpłatna wycena</h3>
-              <div className="space-y-6">
-                <div>
-                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Imię i nazwisko</label>
-                  <input name="name" type="text" required maxLength={200} className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
-                </div>
-                <div>
-                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Telefon</label>
-                  <input name="phone" type="tel" required maxLength={50} className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors" />
-                </div>
-                <div>
-                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Opisz projekt</label>
-                  <textarea name="message" rows={4} maxLength={5000} className="mt-2 w-full bg-transparent border-b border-border py-3 focus:border-accent outline-none transition-colors resize-none" />
-                </div>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full mt-4 px-8 py-4 bg-primary text-primary-foreground hover:bg-accent transition-colors inline-flex items-center justify-center gap-3 group disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  {submitting ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Wysyłanie…
-                    </>
-                  ) : (
-                    <>
-                      Wyślij zapytanie
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          )}
+
+            <p className="text-xs text-muted-foreground mt-8 text-center">
+              Wycena zawsze bezpłatna · bez zobowiązań
+            </p>
+          </div>
         </div>
       </section>
 
